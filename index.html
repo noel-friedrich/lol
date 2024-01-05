@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Library of Léon</title>
+        <link rel="stylesheet" href="style.css?t398">
+        
+        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lora">
+        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Quicksand">
+    </head>
+
+    <body>
+
+		<script>
+			window.onerror = (event, source, lineno, colno, error) => {
+				let errorMessage = "An Error occured. If you think this was a bug, please send the error below to help fix it."
+				errorMessage += "<br><br>We're sorry for the inconvenience!"
+				const emailContent = `I experienced an unexpected Error!\nSource: ${source}\nLine: ${lineno}\nError-Message: ${error}`
+				window.location.href = `contact/?emailContent=${encodeURIComponent(emailContent)}&email=none&message=${errorMessage}`
+			}
+		</script>
+
+
+        <script type="importmap">
+			{
+				"imports": {
+                    "three": "https://unpkg.com/three@v0.158.0/build/three.module.js",
+                    "three/addons/": "https://unpkg.com/three@v0.158.0/examples/jsm/"
+				}
+			}
+		</script>
+
+        <script type="module" src="js/combined.min.js?t87"></script>
+
+		<div class="top-button-panel right">
+			<button id="open-menu-button" onclick="Menu.open()"></button>
+		</div>
+
+		<div class="top-button-panel left">
+			<button id="toggle-drag-mode-button"></button>
+		</div>
+
+		<div id="joystick-container">
+			<div id="joystick-thumb"></div>
+		</div>
+
+		<div id="room-id">Room#0</div>
+
+		<div class="main-menu-container">
+			<div class="main-menu">
+				<div class="close-menu-button" onclick="Menu.close()">✕</div>
+				<div class="title">
+					Library of Léon
+				</div>
+				<div class="main-button-grid">
+					<button class="main-button huge" onclick="Menu.close()">Enter the Library</button>
+					<div class="button-subgrid">
+						<button class="search-book-button huge" onclick="scrollToSearch()">Search a Book</button>
+						<button class="open-settings-button huge" onclick="openRandomBook()">Open a random book</button>
+					</div>
+				</div>
+				<div class="page-intro-text">
+					Welcome to The Library of Leon. Its a three dimensional representation of endless rooms full 
+					of books. Each book is made up of seemingly random letters and has a specific length. 
+					Importantly, all the books are ordered. Each floor contains all possible books of a specific length. 
+					You will find all books that are one hundred letters long on floor one hundred.
+					Thus,<mark onclick="searchStarterBook()"
+					>&nbsp;all books are in this library.</mark>
+					Every book you ever read, every book you will ever read in the future. 
+					Every answer to every question anyone could ever have. Somewhere in there, there is the theory 
+					of the entire universe, the everything formula. Maybe, just maybe, you can find it.
+				</div>
+				<div class="search-container" id="search-container">
+					<div class="search-input-container">
+						<div class="mode-selector" id="mode-selector">
+							Search by
+							<div class="mode-list">
+								<button data-selected="true" data-mode="content" data-description="search book by content">Content</button>
+								<button data-mode="bookid" data-description="search a book by book-number"="">Book Number</button>
+							</div>
+						</div>
+						<textarea id="search-input" rows="3" placeholder="search a book by content"></textarea>
+					</div>
+					<div class="calculating-show" id="calculating-show">Calculating... - Click to Stop</div>
+					<div id="results-container" style="display: none;">
+						<div class="result-table-container">
+							<div class="result-table left">
+								<div class="key">Floor-Number</div>
+								<div class="value" id="floorid-out">0</div>
+								<div class="key">Book-Number</div>
+								<div class="value" id="bookid-out">0</div>
+								<div class="key">Room-Number</div>
+								<div class="value" id="roomid-out">0</div>
+							</div>
+							<div class="result-table right">
+								<div class="key">Shelf-Number</div>
+								<div class="value" id="shelfid-out">0</div>
+								<div class="key">Row-Index</div>
+								<div class="value" id="rowid-out">0</div>
+								<div class="key">Column-Index</div>
+								<div class="value" id="columnid-out">0</div>
+							</div>
+						</div>
+						<div class="button-subgrid">
+							<button onclick="teleportToRoom()">Teleport to Room</button>
+							<button onclick="jumpToFloor()">Begin Path to Room</button>
+						</div>
+					</div>
+				</div>
+				<div class="page-intro-text">
+					This Library is a superset of <a href="https://en.wikipedia.org/wiki/The_Library_of_Babel">The Library of Babel</a>,
+					a short story by <a href="https://en.wikipedia.org/wiki/Jorge_Luis_Borges">Jorge Luis Borges</a>. That Library
+					contains all books with a specific length.
+					This website is heavily inspired by an <a href="https://libraryofbabel.info/">amazing implementation</a>
+					of the Library of Babel by <a href="https://jonathanbasile.com/">Jonathan Basile</a>. The Library of Leon
+					differs in length of books, the choice of alphabet (which letters are possible) and how the space is visualized.
+					This 3d version features a <a href="https://en.wikipedia.org/wiki/Non-Euclidean_geometry">non-euclidean</a>
+					representation. Specifically, the room number depends not only on euclidean location but also on the path taken
+					to get there. Thus, you land in a completely different room when you go forwards, then left than when you go
+					left and then forwards. Therefore, this library could not exist in our 'normal' universe.
+				</div>
+				<div class="floor-display" id="floor-choice">
+					<div class="button-grid top">
+						<button data-increment="1">+ 1</button>
+						<button data-increment="10">+ 10</button>
+						<button data-increment="100">+ 100</button>
+						<button data-increment="1000">+ 1000</button>
+					</div>
+					<div class="input-container">
+						<input type="text" id="floor-input" value="Current Floor: 646" disabled>
+					</div>
+					<div class="button-grid bottom">
+						<button data-increment="-1">- 1</button>
+						<button data-increment="-10">- 10</button>
+						<button data-increment="-100">- 100</button>
+						<button data-increment="-1000">- 1000</button>
+					</div>
+				</div>
+				<div class="page-intro-text">
+					This page was created by <a href="noel-friedrich.de">Noel Friedrich</a>. If you
+					want to contact me, be sure to use the contact form <a href="contact/">here</a>.
+					I'm always available for bug reports, feature ideas and other hello's. You can find
+					the Impressum of this website <a href="http://www.noel-friedrich.de/blobber/legal/impressum">here</a>
+					and the data-privacy page <a href="http://www.noel-friedrich.de/blobber/legal/data-policy">here</a>.
+					I do not collect any data from your client on this page. There are no ads nor trackers.
+					You can however write comments in the books. These comments are anonymous and have to be confirmed by
+					an admin (me) first before being displayed publically.
+				</div>
+				<div class="carousel-button-container">
+					<button onclick="startRandomCarousel()">Start Random Book Carousel</button>
+					<div class="explanation">
+						The random book carousel will show you a new random book every 10 seconds from a random floor.
+						It's a great way to find meaning and spot patterns. But be quick to download any that make sense!
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="book-container">
+			<div id="book">
+				<output id="book-content"></output>
+				<br><br>
+				<output id="book-id" style="font-style:italic;"></output>
+				<button id="close-book" onclick="BookViewer.close()">✕</button>
+				<button id="download-book">Download this book</button>
+				<div class="comment-section">
+					<h3>Comments (<output id="num-comments-output">2</output>)</h3>
+					<div class="loading" id="loading-comments-display">Loading Comments...</div>
+					<div class="comments" id="comments-container"></div>
+					<div class="comment-form-container" id="write-comment-container">
+						<input type="text" name="author" placeholder="Your Name" id="comment-author-input">
+						<textarea name="content" placeholder="Your Comment" rows="5" id="comment-content-input"></textarea>
+						<input type="submit" id="comment-submit-button">
+						<div class="error-message" id="comment-error-output"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+    </body>
+
+</html>
