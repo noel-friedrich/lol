@@ -1,4 +1,4 @@
-# lol
+# The Library of Léon
 > Open it [here](https://noel-friedrich.de/lol/)
 
 ## Table of contents
