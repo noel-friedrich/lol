@@ -1,5 +1,5 @@
 # The Library of Léon
-> Open it [here](https://noel-friedrich.de/lol/)
+> Open it [here](https://noel-friedrich.de/lol/)  
 > I made a [Youtube Video](https://www.youtube.com/watch?v=r8bN0VGOZ_Q) about it
 
 ## Table of contents
