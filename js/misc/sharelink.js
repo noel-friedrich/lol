@@ -5,7 +5,7 @@ class ShareLink {
     static maxUrlLength = 1000
 
     static generateUrl(bookId, floorId) {
-        let baseUrl = window.location.href
+        let baseUrl = window.location.href.split("?")[0]
         if (!baseUrl.endsWith("/")) {
             baseUrl += "/"
         }

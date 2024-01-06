@@ -156,7 +156,19 @@ class BookViewer {
             if (!url) {
                 alert("BookId is too large to share. Sorry!")
             } else {
-                window.open(url, '_blank').focus()
+                try {
+                    if (navigator.share) {
+                        navigator.share({
+                            url,
+                            title: "Book in the Library of Léon"
+                        })
+                    } else {
+                        throw new Error("User Agent does not support sharing")
+                    }
+                } catch (e) {
+                    console.error(e)
+                    window.open(url, '_blank')
+                }
             }
         }
         

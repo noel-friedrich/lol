@@ -1305,7 +1305,19 @@ class BookViewer {
             if (!url) {
                 alert("BookId is too large to share. Sorry!")
             } else {
-                window.open(url, '_blank').focus()
+                try {
+                    if (navigator.share) {
+                        navigator.share({
+                            url,
+                            title: "Book in the Library of Léon"
+                        })
+                    } else {
+                        throw new Error("User Agent does not support sharing")
+                    }
+                } catch (e) {
+                    console.error(e)
+                    window.open(url, '_blank')
+                }
             }
         }
         
@@ -1871,7 +1883,7 @@ class ShareLink {
     static maxUrlLength = 1000
 
     static generateUrl(bookId, floorId) {
-        let baseUrl = window.location.href
+        let baseUrl = window.location.href.split("?")[0]
         if (!baseUrl.endsWith("/")) {
             baseUrl += "/"
         }
@@ -3039,8 +3051,13 @@ async function init3d() {
             BookViewer.openBook(bookId)
         } catch (e) {
             // remove search params
-            console.error(e)
-            window.location.href = window.location.href.split("?")[0]
+
+            if (urlParams.has("debug")) {
+                console.error(e)
+                alert(e.message)
+            } else {
+                window.location.href = window.location.href.split("?")[0]
+            }
         }
     }
 }

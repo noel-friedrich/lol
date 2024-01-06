@@ -44,8 +44,13 @@ async function init3d() {
             BookViewer.openBook(bookId)
         } catch (e) {
             // remove search params
-            console.error(e)
-            window.location.href = window.location.href.split("?")[0]
+
+            if (urlParams.has("debug")) {
+                console.error(e)
+                alert(e.message)
+            } else {
+                window.location.href = window.location.href.split("?")[0]
+            }
         }
     }
 }
