@@ -170,7 +170,8 @@ button {
 }
 
 #book #book-content-mark-slice {
-    color: yellow;
+    color: black;
+    background-color: yellow;
 }
 
 #book .comment-form-container h4 {
