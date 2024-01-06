@@ -109,7 +109,7 @@ function initSearch() {
             result = await BookGenerator.searchBook(query, {generatePaths: false})
         } else if (searchMode == "bookid") {
             const bookId = BigInt(query)
-            result = await BookGenerator.searchBookById(bookId, sceneManager.currFloorId)
+            result = await BookGenerator.searchBookByOnlyId(bookId, {generatePaths: false})
         } else {
             throw new Error(`Searchmode "${searchMode}" is not implemented.`)
         }

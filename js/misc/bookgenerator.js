@@ -110,6 +110,26 @@ class BookGenerator {
         return {bookId, floorId}
     }
 
+    static async searchBookByOnlyId(bookId, {generatePaths = true}={}) {
+        let floorId = 1n
+
+        // use copy of variable in case js ever decides
+        // to pass BigInt's by reference and break everything
+        let a = bookId
+        const divisor = this.alphabetLength
+
+        while (a > 1n) {
+            a /= divisor
+            floorId++
+
+            if (floorId % 1000n == 0n) {
+                await new Promise(resolve => setTimeout(resolve, 0))
+            }
+        }
+
+        return this.searchBookById(bookId, floorId, {generatePaths})
+    }
+
     static async searchBookById(bookId, floorId, {generatePaths = true}={}) {
         this.stopCalculationFlag = false
         const roomId = bookId / 1664n

@@ -148,7 +148,7 @@ class BookViewer {
         }
         
         const playBookButton = document.getElementById("play-book")
-        playBookButton.onclick = () => {
+        playBookButton.onclick = async () => {
             if (!this.contentCache || !this.isOpen) {
                 return
             }
@@ -159,12 +159,14 @@ class BookViewer {
                 this.updateContent()
             } else {
                 MusicPlayer.reset()
-                MusicPlayer.playContent(this.contentCache, {
+                await MusicPlayer.playContent(this.contentCache, {
                     callback: index => {
                         this.markIndex = index
                         this.updateContent()
                     }
                 })
+                this.markIndex = null
+                this.updateContent()
             }
         }
     }

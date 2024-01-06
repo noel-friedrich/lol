@@ -907,6 +907,26 @@ class BookGenerator {
         return {bookId, floorId}
     }
 
+    static async searchBookByOnlyId(bookId, {generatePaths = true}={}) {
+        let floorId = 1n
+
+        // use copy of variable in case js ever decides
+        // to pass BigInt's by reference and break everything
+        let a = bookId
+        const divisor = this.alphabetLength
+
+        while (a > 1n) {
+            a /= divisor
+            floorId++
+
+            if (floorId % 1000n == 0n) {
+                await new Promise(resolve => setTimeout(resolve, 0))
+            }
+        }
+
+        return this.searchBookById(bookId, floorId, {generatePaths})
+    }
+
     static async searchBookById(bookId, floorId, {generatePaths = true}={}) {
         this.stopCalculationFlag = false
         const roomId = bookId / 1664n
@@ -1251,7 +1271,7 @@ class BookViewer {
         }
         
         const playBookButton = document.getElementById("play-book")
-        playBookButton.onclick = () => {
+        playBookButton.onclick = async () => {
             if (!this.contentCache || !this.isOpen) {
                 return
             }
@@ -1262,12 +1282,14 @@ class BookViewer {
                 this.updateContent()
             } else {
                 MusicPlayer.reset()
-                MusicPlayer.playContent(this.contentCache, {
+                await MusicPlayer.playContent(this.contentCache, {
                     callback: index => {
                         this.markIndex = index
                         this.updateContent()
                     }
                 })
+                this.markIndex = null
+                this.updateContent()
             }
         }
     }
@@ -1444,7 +1466,7 @@ function initSearch() {
             result = await BookGenerator.searchBook(query, {generatePaths: false})
         } else if (searchMode == "bookid") {
             const bookId = BigInt(query)
-            result = await BookGenerator.searchBookById(bookId, sceneManager.currFloorId)
+            result = await BookGenerator.searchBookByOnlyId(bookId, {generatePaths: false})
         } else {
             throw new Error(`Searchmode "${searchMode}" is not implemented.`)
         }
