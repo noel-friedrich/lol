@@ -163,7 +163,10 @@
 				<output id="book-id" style="font-style:italic;"></output>
 				<button id="close-book" onclick="BookViewer.close()">✕</button>
 				<button id="play-book"></button>
-				<button id="download-book">Download this book</button>
+				<div class="two-button-grid">
+					<button id="share-book">Share</button>
+					<button id="download-book">Download</button>
+				</div>
 				<div class="comment-section">
 					<h3>Comments (<output id="num-comments-output">2</output>)</h3>
 					<div class="loading" id="loading-comments-display">Loading Comments...</div>
@@ -178,7 +181,7 @@
 			</div>
 		</div>
 		
-        <script type="module" src="js/combined.min.js?t91"></script>
+        <script type="module" src="js/combined.min.js?t92"></script>
 
     </body>
 

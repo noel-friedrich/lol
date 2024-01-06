@@ -146,6 +146,19 @@ class BookViewer {
 
             downloadBook(this.contentCache, this.bookIdCache, sceneManager.currFloorId)
         }
+
+        document.getElementById("share-book").onclick = () => {
+            if (!this.isOpen || this.bookIdCache == null) {
+                return
+            }
+
+            const url = ShareLink.generateUrl(this.bookIdCache, sceneManager.currFloorId)
+            if (!url) {
+                alert("BookId is too large to share. Sorry!")
+            } else {
+                window.open(url, '_blank').focus()
+            }
+        }
         
         const playBookButton = document.getElementById("play-book")
         playBookButton.onclick = async () => {

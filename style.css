@@ -137,7 +137,14 @@ button {
     background-color: rgba(0, 0, 0, 0.3);
 }
 
-#book #download-book {
+#book .two-button-grid {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 1fr 1fr;
+    gap: .5rem;
+}
+
+#book .two-button-grid button {
     padding: .5rem;
     border: 2px solid white;
     border-radius: 8px;
@@ -153,7 +160,7 @@ button {
     width: 100%;
 }
 
-#book #download-book:hover {
+#book .two-button-grid button:hover {
     background-color: rgba(255, 255, 255, 0.1);
 }
 

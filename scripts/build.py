@@ -38,6 +38,7 @@ js_file_order = [
     "misc/random-carousel.js",
     "misc/downloadbook.js",
     "misc/musicplayer.js",
+    "misc/sharelink.js",
 
     "objects/room.js",
 

@@ -33,6 +33,21 @@ async function init3d() {
     initSearch()
     updateFloorChoice()
     Comments.init()
+
+    const urlParams = new URLSearchParams(window.location.search)
+    if (urlParams.has("b") || urlParams.has("book")) {
+        const bookCode = urlParams.get("b") || urlParams.get("book")
+        try {
+            const {bookId, floorId} = ShareLink.decodeBook(bookCode)
+            Menu.close()
+            await sceneManager.changeFloor(floorId, {animationDuration: 0})
+            BookViewer.openBook(bookId)
+        } catch (e) {
+            // remove search params
+            console.error(e)
+            window.location.href = window.location.href.split("?")[0]
+        }
+    }
 }
 
 init3d()

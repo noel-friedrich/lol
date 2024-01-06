@@ -1295,6 +1295,19 @@ class BookViewer {
 
             downloadBook(this.contentCache, this.bookIdCache, sceneManager.currFloorId)
         }
+
+        document.getElementById("share-book").onclick = () => {
+            if (!this.isOpen || this.bookIdCache == null) {
+                return
+            }
+
+            const url = ShareLink.generateUrl(this.bookIdCache, sceneManager.currFloorId)
+            if (!url) {
+                alert("BookId is too large to share. Sorry!")
+            } else {
+                window.open(url, '_blank').focus()
+            }
+        }
         
         const playBookButton = document.getElementById("play-book")
         playBookButton.onclick = async () => {
@@ -1848,6 +1861,88 @@ class MusicPlayer {
 }
 
 window.MusicPlayer = MusicPlayer
+
+// -------- js/misc/sharelink.js --------
+
+class ShareLink {
+
+    // a-z, A-Z and 0-9
+    static encodeAlphabet = "B6r9uWS8mYbIoXOh4EHUsGLnxkjZi05lCA2Dftzya7TRvFgKNdw1VeJqc3PpMQ"
+    static maxUrlLength = 1000
+
+    static generateUrl(bookId, floorId) {
+        let baseUrl = window.location.href
+        if (!baseUrl.endsWith("/")) {
+            baseUrl += "/"
+        }
+
+        const url = `${baseUrl}?b=${this.encodeBook(bookId, floorId)}`
+
+        if (url.length > this.maxUrlLength) {
+            return false
+        } else {
+            return url
+        }
+    }
+
+    static encodeNum(n) {
+        if (n == 0n) {
+            return this.encodeAlphabet[0]
+        }
+
+        let outputString = ""
+        const alphabetLength = BigInt(this.encodeAlphabet.length)
+
+        while (n > 0n) {
+            const index = n % alphabetLength
+            n /= alphabetLength
+            outputString = this.encodeAlphabet[index] + outputString
+        }
+
+        return outputString
+    }
+
+    static decodeNum(encodedString) {
+        if (encodedString.length == 0) {
+            throw new Error("Invalid Encoded String (Empty)")
+        }
+ 
+        let sum = 0n
+        let factor = 1n
+        const alphabetLength = BigInt(this.encodeAlphabet.length)
+
+        for (let i = 0; i < encodedString.length; i++) {
+            const char = encodedString[encodedString.length - 1 - i]
+            const index = this.encodeAlphabet.indexOf(char)
+
+            if (index == -1) {
+                throw new Error(`Invalid Encoded String (Unknown Character "${char}")`)
+            }
+
+            sum += BigInt(index) * factor
+            factor *= alphabetLength
+        }
+
+        return sum
+    }
+
+    static encodeBook(bookId, floorId) {
+        return `${this.encodeNum(bookId)}-${this.encodeNum(floorId)}`
+    }
+
+    static decodeBook(encodedString) {
+        const parts = encodedString.split("-")
+        if (parts.length != 2) {
+            throw new Error(`Invalid Encoded String (Invalid Number of Parts: ${parts.length})`)
+        }
+
+        const [bookId, floorId] = parts.map(e => this.decodeNum(e))
+        return {bookId, floorId}
+    }
+
+}
+
+window.ShareLink = ShareLink
 
 // -------- js/objects/room.js --------
 
@@ -2625,7 +2720,7 @@ class SceneManager {
     async changeFloor(newFloorId, {animationDuration=2000}={}) {
         return new Promise(resolve => {
             if (newFloorId == this.currFloorId) {
-                return
+                return resolve()
             }
     
             const differenceSign = parseInt(this.currFloorId - newFloorId) * -1
@@ -2933,6 +3028,21 @@ async function init3d() {
     initSearch()
     updateFloorChoice()
     Comments.init()
+
+    const urlParams = new URLSearchParams(window.location.search)
+    if (urlParams.has("b") || urlParams.has("book")) {
+        const bookCode = urlParams.get("b") || urlParams.get("book")
+        try {
+            const {bookId, floorId} = ShareLink.decodeBook(bookCode)
+            Menu.close()
+            await sceneManager.changeFloor(floorId, {animationDuration: 0})
+            BookViewer.openBook(bookId)
+        } catch (e) {
+            // remove search params
+            console.error(e)
+            window.location.href = window.location.href.split("?")[0]
+        }
+    }
 }
 
 init3d()

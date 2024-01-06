@@ -28,7 +28,7 @@ class SceneManager {
     async changeFloor(newFloorId, {animationDuration=2000}={}) {
         return new Promise(resolve => {
             if (newFloorId == this.currFloorId) {
-                return
+                return resolve()
             }
     
             const differenceSign = parseInt(this.currFloorId - newFloorId) * -1
