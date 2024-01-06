@@ -71,6 +71,10 @@ class Comments {
     static async load(bookId) {
         this.currBookId = bookId
         this.commentErrorOutput.textContent = ""
+
+        // clear previous comment input
+        this.commentAuthorInput.value = ""
+        this.commentContentInput.value = ""
         
         try {
             this.commentsContainer.innerHTML = ""

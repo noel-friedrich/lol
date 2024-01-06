@@ -156,6 +156,8 @@ class FirstPersonControls {
     }
 
     _onKeyDown(event) {
+        if (!event.key) return
+
         if (event.key.toUpperCase() == "W" || event.key == "ArrowUp") {
             this.movingForwards = true
         }
@@ -174,6 +176,8 @@ class FirstPersonControls {
     }
 
     _onKeyUp(event) {
+        if (!event.key) return
+
         if (event.key.toUpperCase() == "W" || event.key == "ArrowUp") {
             this.movingForwards = false
         }
@@ -1034,6 +1038,10 @@ class Comments {
     static async load(bookId) {
         this.currBookId = bookId
         this.commentErrorOutput.textContent = ""
+
+        // clear previous comment input
+        this.commentAuthorInput.value = ""
+        this.commentContentInput.value = ""
         
         try {
             this.commentsContainer.innerHTML = ""
