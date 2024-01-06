@@ -157,9 +157,13 @@ button {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-#book #book-content,
+#book .book-content,
 #book #book-id {
     white-space: pre-wrap;
+}
+
+#book #book-content-mark-slice {
+    color: yellow;
 }
 
 #book .comment-form-container h4 {
@@ -259,6 +263,26 @@ button {
     margin-top: 1rem;
     margin-bottom: 1rem;
     text-align: center;
+}
+
+#play-book {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: white;
+    width:  1.5em;
+    height: 1.5em;
+    background-image: url("assets/images/speaker-icon.svg");
+    background-size: 100%;
+    background-repeat: no-repeat;
+    transition: 250ms;
+}
+
+#play-book:hover {
+    transform: scale(1.05);
 }
 
 #close-book {

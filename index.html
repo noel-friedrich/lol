@@ -5,7 +5,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Library of Léon</title>
-        <link rel="stylesheet" href="style.css?t398">
+        <link rel="stylesheet" href="style.css?t401">
         
         <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lora">
         <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Quicksand">
@@ -32,7 +32,7 @@
 			}
 		</script>
 
-        <script type="module" src="js/combined.min.js?t87"></script>
+        <script type="module" src="js/combined.min.js?t90"></script>
 
 		<div class="top-button-panel right">
 			<button id="open-menu-button" onclick="Menu.open()"></button>
@@ -160,10 +160,11 @@
 
 		<div id="book-container">
 			<div id="book">
-				<output id="book-content"></output>
+				<output class="book-content" id="book-content-start-slice"></output><output class="book-content" id="book-content-mark-slice"></output><output class="book-content" id="book-content-end-slice"></output>
 				<br><br>
 				<output id="book-id" style="font-style:italic;"></output>
 				<button id="close-book" onclick="BookViewer.close()">✕</button>
+				<button id="play-book"></button>
 				<button id="download-book">Download this book</button>
 				<div class="comment-section">
 					<h3>Comments (<output id="num-comments-output">2</output>)</h3>

@@ -1,6 +1,11 @@
 class BookViewer {
 
-    static contentElement = document.getElementById("book-content")
+    static contentStartSlice = document.getElementById("book-content-start-slice")
+    static contentEndSlice = document.getElementById("book-content-end-slice")
+    static contentMarkSlice = document.getElementById("book-content-mark-slice")
+
+    static markIndex = null
+
     static idElement = document.getElementById("book-id")
     static container = document.getElementById("book-container")
     static book = document.getElementById("book")
@@ -17,6 +22,18 @@ class BookViewer {
     static contentCache = null
     static bookIdCache = null
 
+    static updateContent() {
+        if (this.markIndex == null) {
+            this.contentStartSlice.textContent = this.contentCache
+            this.contentMarkSlice.textContent = ""
+            this.contentEndSlice.textContent = ""
+        } else {
+            this.contentStartSlice.textContent = this.contentCache.slice(0, this.markIndex)
+            this.contentMarkSlice.textContent = this.contentCache[this.markIndex]
+            this.contentEndSlice.textContent = this.contentCache.slice(this.markIndex + 1, this.contentCache.length)
+        }
+    }
+
     static openBook(bookId) {
         this.idElement.textContent = `Book#${bookId}\non Floor#${sceneManager.currFloorId}`
 
@@ -24,8 +41,7 @@ class BookViewer {
         
         this.contentCache = bookContent
         this.bookIdCache = bookId
-
-        this.contentElement.textContent = bookContent
+        this.updateContent()
 
         this.open()
         
@@ -36,6 +52,8 @@ class BookViewer {
         if (this.isOpen || this.isAnimating) {
             return
         }
+
+        this.markIndex = null
 
         this.book.animate([
             {opacity: 0, transform: "scale(0)"},
@@ -66,6 +84,8 @@ class BookViewer {
         if (!this.isOpen || this.isAnimating) {
             return
         }
+
+        MusicPlayer.reset()
 
         if (manualClose) {
             stopRandomCarousel()
@@ -125,6 +145,27 @@ class BookViewer {
             }
 
             downloadBook(this.contentCache, this.bookIdCache, sceneManager.currFloorId)
+        }
+        
+        const playBookButton = document.getElementById("play-book")
+        playBookButton.onclick = () => {
+            if (!this.contentCache || !this.isOpen) {
+                return
+            }
+
+            if (MusicPlayer.isRunning) {
+                MusicPlayer.reset()
+                this.markIndex = null
+                this.updateContent()
+            } else {
+                MusicPlayer.reset()
+                MusicPlayer.playContent(this.contentCache, {
+                    callback: index => {
+                        this.markIndex = index
+                        this.updateContent()
+                    }
+                })
+            }
         }
     }
 
