@@ -973,6 +973,7 @@ class Comments {
     static commentErrorOutput = document.getElementById("comment-error-output")
 
     static currHash = null
+    static currBookId = null
 
     static async getBookIdHash(bookId) {
         let hash = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(bookId.toString()))
@@ -1024,7 +1025,14 @@ class Comments {
         }
     }
 
+    static async reload() {
+        if (this.currBookId != null) {
+            await this.load(this.currBookId)
+        }
+    }
+
     static async load(bookId) {
+        this.currBookId = bookId
         this.commentErrorOutput.textContent = ""
         
         try {
@@ -1108,7 +1116,13 @@ class Comments {
             const response = await rawResponse.json()
             
             if (response.ok) {
-                this.commentErrorOutput.textContent = "Comment sent. After an admin has confirmed it, it will appear here. Thank you!"
+                // this.commentErrorOutput.textContent = "Comment sent. After an admin has confirmed it, it will appear here. Thank you!"
+                this.commentErrorOutput.textContent = "Comment sent. It should appear here shortly!"
+                setTimeout(() => {
+                    this.commentErrorOutput.textContent = ""
+                    this.reload()
+                }, 1000)
+
                 this.commentAuthorInput.value = ""
                 this.commentContentInput.value = ""
             } else {
