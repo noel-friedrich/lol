@@ -92,6 +92,12 @@ class Comments {
         }
     }
 
+    static replaceWithAlphabet(text) {
+        let newText = text.toLowerCase().replaceAll("ä", "ae").replaceAll("ö", "oe").replaceAll("ü", "ue")
+            .replaceAll("!", ".").replaceAll("?", ".").replaceAll("ß", "ss")
+        return newText.split("").filter(c => BookGenerator.alphabet.includes(c)).join("")
+    }
+
     static init() {
         const error = msg => {
             this.commentErrorOutput.textContent = msg == "noshow" ? "" : msg
@@ -110,23 +116,21 @@ class Comments {
                 return error("noshow")
             }
 
-            const author = this.commentAuthorInput.value
-            const content = this.commentContentInput.value
+            let author = this.commentAuthorInput.value
+            let content = this.commentContentInput.value
+
+            content = this.replaceWithAlphabet(content).slice(0, 512)
+            this.commentAuthorInput.value = content
+
+            author = this.replaceWithAlphabet(author).slice(0, 64)
+            this.commentAuthorInput.value = author
 
             if (author.length == 0) {
                 return error("noshow")
             }
 
-            if (!/^[a-zA-Z.,\s]{1,64}$/.test(author)) {
-                return error("Invalid Name. Name may only consist of 64 letters, spaces, periods or commas.")
-            }
-
             if (content.length == 0) {
                 return error("noshow")
-            }
-
-            if (!/^[a-zA-Z.,\n\s]{1,512}$/.test(content)) {
-                return error("Invalid Comment. Comment may only consist of 512 letters, spaces, periods or commas.")
             }
 
             error("")
@@ -154,7 +158,7 @@ class Comments {
             
             if (response.ok) {
                 // this.commentErrorOutput.textContent = "Comment sent. After an admin has confirmed it, it will appear here. Thank you!"
-                this.commentErrorOutput.textContent = "Comment sent. It should appear here shortly!"
+                this.commentErrorOutput.textContent = "Comment sent. It should appear shortly!"
                 setTimeout(() => {
                     this.commentErrorOutput.textContent = ""
                     this.reload()

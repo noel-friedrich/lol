@@ -59,6 +59,8 @@ class FirstPersonControls {
     }
 
     _onKeyDown(event) {
+        if (!event.key) return
+
         if (event.key.toUpperCase() == "W" || event.key == "ArrowUp") {
             this.movingForwards = true
         }
@@ -77,6 +79,8 @@ class FirstPersonControls {
     }
 
     _onKeyUp(event) {
+        if (!event.key) return
+
         if (event.key.toUpperCase() == "W" || event.key == "ArrowUp") {
             this.movingForwards = false
         }
