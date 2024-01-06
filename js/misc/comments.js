@@ -124,7 +124,7 @@ class Comments {
             let content = this.commentContentInput.value
 
             content = this.replaceWithAlphabet(content).slice(0, 512)
-            this.commentAuthorInput.value = content
+            this.commentContentInput.value = content
 
             author = this.replaceWithAlphabet(author).slice(0, 64)
             this.commentAuthorInput.value = author
