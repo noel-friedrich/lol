@@ -152,6 +152,10 @@ class Comments {
             formData.append("author", author)
             formData.append("content", content)
             formData.append("bookid_hash", this.currHash)
+
+            if (BookViewer.isOpen && BookViewer.contentCache) {
+                formData.append("book_content", BookViewer.contentCache)
+            }
         
             const rawResponse = await fetch("api/write_comment.php", {
                 method: "POST",

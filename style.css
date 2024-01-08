@@ -350,6 +350,25 @@ button {
     gap: 1em;
     padding: 10px;
     height: fit-content;
+    color: white;
+}
+
+.main-menu .button-container {
+    width: 100%;
+    box-sizing: border-box;
+    border: 2px solid white;
+    border-radius: calc(16px + .5em);
+    padding: .5em;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    margin-top: 1rem;
+}
+
+#horror-menu-container {
+    background-color: rgba(0, 0, 0, 0.8);
+    display: none;
 }
 
 .main-menu .title {
@@ -381,7 +400,8 @@ button {
     grid-template-columns: repeat(auto-fit, minmax(18em, 1fr));
 }
 
-.main-menu button {
+.main-menu button,
+.main-menu input {
     font-family: "Lora", serif;
     border: none;
     cursor: pointer;
@@ -391,9 +411,17 @@ button {
     border: 1px solid rgba(255, 255, 255, 0.3);
     width: 100%;
     transition: 300ms;
-    font-size: 1em;
+    font-size: 1.3em;
     border-radius: 16px;
     padding: 1em;
+    box-sizing: border-box;
+}
+
+.main-menu input {
+    background: rgba(0, 0, 0, 0.2);
+    cursor: unset;
+    color: white;
+    text-align: center;
 }
 
 .main-menu button.huge {
@@ -433,7 +461,7 @@ button {
     margin-right: .5em;
 }
 
-.main-menu > .page-intro-text {
+.main-menu .page-intro-text {
     color: white;
     text-align: justify;
     font-size: 1.4em;
@@ -441,7 +469,7 @@ button {
     padding-right: 1em;
 }
 
-.main-menu > .page-intro-text > mark {
+.main-menu .page-intro-text > mark {
     background-color: white;
     cursor: pointer;
 }

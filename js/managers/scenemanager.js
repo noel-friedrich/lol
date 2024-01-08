@@ -81,6 +81,15 @@ class SceneManager {
         RoomIndicator.update(this)
     }
 
+    teleportToMiddle() {
+        this.pathBuilder = new PathBuilder()
+        
+        this.currFloor.updateRooms()
+        RoomIndicator.update(this)
+        this.camera.position.x = 0
+        this.camera.position.z = 0
+    }
+
     startSearch(searchInfo) {
         this.searchInfo = searchInfo
         this.currFloor.updateRooms()
@@ -259,6 +268,11 @@ class SceneManager {
             this.camera.position.z -= y * 14
             this.camera.roomPosition.x += x
             this.camera.roomPosition.y += y
+
+            if (HorrorManager.active) {
+                Slenderman.position.x -= x * 14
+                Slenderman.position.z -= y * 14
+            }
 
             this.currFloor.updateRooms()
         }

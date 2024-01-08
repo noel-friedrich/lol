@@ -1,7 +1,7 @@
 class Menu {
 
     static isOpen = true
-    static container = document.querySelector(".main-menu-container")
+    static container = document.getElementById("main-menu-container")
     static transitionMs = 500 // needs to match css .main-menu-container transition period
 
     static get isClosed() {
@@ -9,7 +9,11 @@ class Menu {
     }
 
     static open() {
-        if (this.isOpen || BookViewer.isAnimating || BookViewer.isOpen) {
+        if (HorrorManager.active) {
+            HorrorManager.pause()
+        }
+
+        if (this.isOpen || BookViewer.isAnimating || BookViewer.isOpen || HorrorManager.active) {
             return
         }
 

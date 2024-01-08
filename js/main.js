@@ -17,6 +17,7 @@ async function init3d() {
     domManager.addToBody(sceneManager.canvas)
     
     function loop() {
+        HorrorManager.update()
         sceneManager.update()
         domManager.update(sceneManager)
         animationManager.update()

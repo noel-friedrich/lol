@@ -40,6 +40,11 @@ js_file_order = [
     "misc/musicplayer.js",
     "misc/sharelink.js",
 
+    "horror/horrormanager.js",
+    "horror/heartbeat.js",
+    "horror/slenderman.js",
+    "horror/horrormenu.js",
+
     "objects/room.js",
 
     "managers/animationmanager.js",

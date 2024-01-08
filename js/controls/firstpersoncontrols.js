@@ -143,6 +143,7 @@ class FirstPersonControls {
 
             } else {
                 this._controlsActive = false
+
                 Menu.open()
             }
         }

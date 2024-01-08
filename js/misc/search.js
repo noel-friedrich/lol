@@ -2,9 +2,21 @@ function initSearch() {
 
     function filterText(value) {
         if (searchMode == "content") {
-            value = value.toLowerCase()
-            value = value.replaceAll("ä", "ae").replaceAll("ö", "oe").replaceAll("ü", "ue")
-                .replaceAll("!", ".").replaceAll("?", ".").replaceAll("ß", "ss")
+            const lowerCaseAlphabet = "abcdefghijklmnopqrstuvwxyz"
+            const upperCaseAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            for (let i = 0; i < 26; i++) {
+                if (!BookGenerator.alphabet.includes(upperCaseAlphabet[i])) {
+                    value = value.replaceAll(upperCaseAlphabet[i], lowerCaseAlphabet[i])
+                }
+            }
+
+            if (!BookGenerator.alphabet.includes("ä")) value = value.replaceAll("ä", "ae")
+            if (!BookGenerator.alphabet.includes("ö")) value = value.replaceAll("ö", "oe")
+            if (!BookGenerator.alphabet.includes("ü")) value = value.replaceAll("ü", "ue")
+            if (!BookGenerator.alphabet.includes("ß")) value = value.replaceAll("ß", "ss")
+            if (!BookGenerator.alphabet.includes("!")) value = value.replaceAll("!", ".")
+            if (!BookGenerator.alphabet.includes("?")) value = value.replaceAll("?", ".")
+
             return value.split("").filter(c => BookGenerator.alphabet.includes(c)).join("")
         } else if (searchMode == "bookid") {
             return value.split("").filter(c => "0123456789".includes(c)).join("")
@@ -223,5 +235,19 @@ function initSearch() {
         const bookId = randomBigInt(maxBookId)
         Menu.close()
         BookViewer.openBook(bookId)
+    }
+
+    const alphabetInput = document.getElementById("alphabet-input")
+    alphabetInput.value = BookGenerator.alphabet.replaceAll("\n", "\\n")
+    const originalValue = BookGenerator.alphabet
+    alphabetInput.oninput = () => {
+        const newAlphabet = alphabetInput.value.replaceAll("\\n", "\n")
+        if (newAlphabet.length == 0) {
+            alphabetInput.value = originalValue
+            return
+        }
+
+        BookGenerator.alphabet = newAlphabet
+        sceneManager.currFloor.updateRooms()
     }
 }

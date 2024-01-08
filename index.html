@@ -46,8 +46,63 @@
 
 		<div id="room-id">Room#0</div>
 
-		<div class="main-menu-container">
+		<div class="main-menu-container" id="horror-menu-container">
 			<div class="main-menu">
+				<section data-name="start">
+					<div class="title">Horror Mode</div>
+					<div class="page-intro-text">
+						Welcome to Horror Mode. Your task is to complete the
+						path to a book while a skinny man tries to hunt you. He 
+						can only move when you can't see him. However, he can
+						teleport to a room around you if he feels like it.<br>
+						Activate sounds to hear when he get's closer. Try to run.
+					</div>
+					<div class="button-container">
+						<button onclick="HorrorManager.start()">Start Game</button>
+					</div>
+				</section>
+				<section data-name="ingame">
+					<div class="title">Paused</div>
+					<div class="page-intro-text">
+						You fool are wishing to escape? The hunt for you is still on
+						and the skinny man is hungrier than ever. Do you want to
+						quit? Or do you want to try?
+					</div>
+					<div class="button-container">
+						<button onclick="HorrorManager.continue()">Continue</button>
+						<button onclick="HorrorManager.stop()">Quit</button>
+					</div>
+				</section>
+				<section data-name="caught">
+					<div class="title">Caught!</div>
+					<div class="page-intro-text">
+						The skinny man got to you before you found your book.
+						Poor you! Do you dare to try again? You can also run
+						away like a fool.
+					</div>
+					<div class="button-container">
+						<button onclick="HorrorManager.start()">Play again!</button>
+						<button onclick="HorrorManager.stop()">Run away (like a fool)</button>
+					</div>
+				</section>
+				<section data-name="won">
+					<div class="title">You won!</div>
+					<div class="page-intro-text">
+						Somehow, you got to the book before the skinny man got
+						to you. That is quite incredible and you may tell all your
+						friends about your great achievement. But don't be naive.
+						The skinny man will find you sometime soon.
+					</div>
+					<div class="button-container">
+						<button onclick="HorrorManager.start()">Play again!</button>
+						<button onclick="HorrorManager.stop()">Run away</button>
+					</div>
+				</section>
+			</div>
+		</div>
+
+		<div class="main-menu-container" id="main-menu-container">
+			<div class="main-menu" id="main-menu">
 				<div class="close-menu-button" onclick="Menu.close()">✕</div>
 				<div class="title">
 					Library of Léon
@@ -152,6 +207,23 @@
 						The random book carousel will show you a new random book every 10 seconds from a random floor.
 						It's a great way to find meaning and spot patterns. But be quick to download any that make sense!
 					</div>
+				</div>
+				<div class="page-intro-text">
+					I've also made a fun horror mode that's so much fun and so not creepy! If you dare to
+					play, click the button below. A skinny man will hunt you across the library while you
+					seek to find the book of truth.
+				</div>
+				<div class="carousel-button-container">
+					<button onclick="HorrorMenu.open()">Start Horror Mode</button>
+				</div>
+				<div class="page-intro-text">
+					Each book is made up of a specific set of letters. This set is called the 'alphabet' of the Library.
+					Below, you will see the current alphabet. The '\n' is the newline character (which moves the writehead
+					to the next line, similar to pressing the 'Enter' key). You may customize it to your liking! Clear it to
+					reset it to the original value.
+				</div>
+				<div class="carousel-button-container">
+					<input id="alphabet-input">
 				</div>
 			</div>
 		</div>
