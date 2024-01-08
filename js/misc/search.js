@@ -247,8 +247,7 @@ function initSearch() {
             return
         }
 
-        BookGenerator.alphabet = newAlphabet
-        BookGenerator.invalidateCache()
+        BookGenerator.changeAlphabet(newAlphabet)
         sceneManager.currFloor.updateRooms()
     }
 }

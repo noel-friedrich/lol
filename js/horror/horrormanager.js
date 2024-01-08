@@ -35,6 +35,7 @@ class HorrorManager {
 
         this.paused = false
         
+        BookGenerator.resetAlphabet()
         const truth = "you made it"
         const searchInfo = await BookGenerator.searchBook(truth)
         sceneManager.teleportToMiddle()

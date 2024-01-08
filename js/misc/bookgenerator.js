@@ -1,6 +1,7 @@
 class BookGenerator {
 
     static alphabet = "abcdefghijklmnopqrstuvwxyz ,.\n"
+    static originalAlphabet = "abcdefghijklmnopqrstuvwxyz ,.\n"
     static stopCalculationFlag = false
 
     static numRoomsCacheAlphabetLength = -1
@@ -8,6 +9,23 @@ class BookGenerator {
 
     static invalidateCache() {
         this.numRoomsCache.clear()
+    }
+
+    static changeAlphabet(newAlphabet) {
+        if (newAlphabet.length == 0) {
+            throw new Error("Invalid alphabet")
+        }
+
+        this.alphabet = newAlphabet
+        this.invalidateCache()
+
+        if (document.getElementById("alphabet-input")) {
+            document.getElementById("alphabet-input").value = newAlphabet.replaceAll("\n", "\\n")
+        }
+    }
+
+    static resetAlphabet() {
+        this.changeAlphabet(this.originalAlphabet)
     }
 
     static getMaxBookId(floorId) {

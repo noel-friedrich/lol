@@ -803,10 +803,32 @@ window.RoomIndicator = RoomIndicator
 class BookGenerator {
 
     static alphabet = "abcdefghijklmnopqrstuvwxyz ,.\n"
+    static originalAlphabet = "abcdefghijklmnopqrstuvwxyz ,.\n"
     static stopCalculationFlag = false
 
     static numRoomsCacheAlphabetLength = -1
     static numRoomsCache = new Map()
+
+    static invalidateCache() {
+        this.numRoomsCache.clear()
+    }
+
+    static changeAlphabet(newAlphabet) {
+        if (newAlphabet.length == 0) {
+            throw new Error("Invalid alphabet")
+        }
+
+        this.alphabet = newAlphabet
+        this.invalidateCache()
+
+        if (document.getElementById("alphabet-input")) {
+            document.getElementById("alphabet-input").value = newAlphabet.replaceAll("\n", "\\n")
+        }
+    }
+
+    static resetAlphabet() {
+        this.changeAlphabet(this.originalAlphabet)
+    }
 
     static getMaxBookId(floorId) {
         if (this.numRoomsCacheAlphabetLength == this.alphabet.length && this.numRoomsCache.has(floorId)) {
@@ -1669,7 +1691,7 @@ function initSearch() {
             return
         }
 
-        BookGenerator.alphabet = newAlphabet
+        BookGenerator.changeAlphabet(newAlphabet)
         sceneManager.currFloor.updateRooms()
     }
 }
@@ -2060,6 +2082,7 @@ class HorrorManager {
 
         this.paused = false
         
+        BookGenerator.resetAlphabet()
         const truth = "you made it"
         const searchInfo = await BookGenerator.searchBook(truth)
         sceneManager.teleportToMiddle()
