@@ -6,6 +6,10 @@ class BookGenerator {
     static numRoomsCacheAlphabetLength = -1
     static numRoomsCache = new Map()
 
+    static invalidateCache() {
+        this.numRoomsCache.clear()
+    }
+
     static getMaxBookId(floorId) {
         if (this.numRoomsCacheAlphabetLength == this.alphabet.length && this.numRoomsCache.has(floorId)) {
             return this.numRoomsCache.get(floorId)
