@@ -54,11 +54,13 @@
 						Welcome to Horror Mode. Your task is to complete the
 						path to a book while a skinny man tries to hunt you. He 
 						can only move when you can't see him. However, he can
-						teleport to a room around you if he feels like it.<br>
-						Activate sounds to hear when he get's closer. Try to run.
+						teleport to a room around you if he feels like it.<br><br>
+						Activate sounds to hear when he get's closer. Try to run.<br>
+						Good Luck.
 					</div>
 					<div class="button-container">
 						<button onclick="HorrorManager.start()">Start Game</button>
+						<button onclick="HorrorMenu.open('highscores')">See Highscores</button>
 					</div>
 				</section>
 				<section data-name="ingame">
@@ -94,8 +96,31 @@
 						The skinny man will find you sometime soon.
 					</div>
 					<div class="button-container">
+						<button onclick="HorrorMenu.open('upload_highscore')">Upload Score</button>
 						<button onclick="HorrorManager.start()">Play again!</button>
 						<button onclick="HorrorManager.stop()">Run away</button>
+					</div>
+				</section>
+				<section data-name="upload_highscore">
+					<div class="title">Upload Score</div>
+					<div class="page-intro-text">
+						You should be proud. Not too many souls make it. But those who do
+						enjoy the privilege of superiority. They are members of the
+						<b>Highscore-List</b> and probably feel pretty cool. Enter your name
+						to upload your score (<output id="score-output">?</output>).
+					</div>
+					<div class="button-container">
+						<input id="highscore-name-input" placeholder="Your Name">
+						<button onclick="HorrorMenu.sendHighscore()">Send Score</button>
+						<button onclick="HorrorMenu.close()">Run away</button>
+					</div>
+				</section>
+				<section data-name="highscores">
+					<div class="title">Highscores</div>
+					<div class="highscores-container" id="highscores-container"></div>
+					<div class="button-container">
+						<button onclick="HorrorMenu.open('start')">Play Game</button>
+						<button onclick="HorrorMenu.close()">Run away</button>
 					</div>
 				</section>
 			</div>

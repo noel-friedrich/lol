@@ -371,6 +371,39 @@ button {
     display: none;
 }
 
+#highscores-container {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: .5rem;
+    border: 2px solid white;
+    border-radius: calc(16px + .5em);
+    padding: .5em;
+    box-sizing: border-box;
+}
+
+#highscores-container > div {
+    display: grid;
+    grid-template-columns: 2em 1.5fr .5fr 1fr;
+    gap: .5rem;
+    padding: .5em;
+    box-sizing: border-box;
+}
+
+#highscores-container > div:not(:last-child) {
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgb(167, 167, 167);
+}
+
+#highscores-container > div > *[data-name="score"],
+#highscores-container > div > *[data-name="time"] {
+    text-align: center;
+}
+
+.main-menu section {
+    width: 100%;
+}
+
 .main-menu .title {
     text-align: center;
     font-size: 5em;

@@ -7,6 +7,7 @@ class HorrorManager {
     static heartbeat = null
 
     static paused = false
+    static score = null
 
     static updateColors() {
         if (this.active && this.colorMode == "normal") {
@@ -57,15 +58,20 @@ class HorrorManager {
     }
 
     static async win() {
+        const score = Math.floor(this.gameTime / 1000)
         this.pause()
         sceneManager.keyboardMouseControls._removePointerLock()
         HorrorManager.stop()
+
+        this.score = score
+        HorrorMenu.updateScoreOutput(this.score)
 
         await new Promise(resolve => setTimeout(resolve, 100))
         HorrorMenu.open("won")
     }
 
     static async lose() {
+        this.score = 0
         this.pause()
         // TODO: lose animation
         sceneManager.keyboardMouseControls._removePointerLock()
@@ -86,6 +92,7 @@ class HorrorManager {
         this.active = false
         this.updateColors()
         Slenderman.hide()
+        this.score = null
 
         if (this.heartbeat) {
             this.heartbeat.stop()

@@ -34,6 +34,7 @@ async function init3d() {
     initSearch()
     updateFloorChoice()
     Comments.init()
+    HorrorMenu.init()
 
     const urlParams = new URLSearchParams(window.location.search)
     if (urlParams.has("b") || urlParams.has("book")) {

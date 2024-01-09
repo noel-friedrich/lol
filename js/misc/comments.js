@@ -99,7 +99,7 @@ class Comments {
     static replaceWithAlphabet(text) {
         let newText = text.toLowerCase().replaceAll("ä", "ae").replaceAll("ö", "oe").replaceAll("ü", "ue")
             .replaceAll("!", ".").replaceAll("?", ".").replaceAll("ß", "ss")
-        return newText.split("").filter(c => BookGenerator.alphabet.includes(c)).join("")
+        return newText.split("").filter(c => BookGenerator.originalAlphabet.includes(c)).join("")
     }
 
     static init() {
