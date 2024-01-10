@@ -55,6 +55,8 @@ async function init3d() {
             }
         }
     }
+
+    LoadingOverlay.hide()
 }
 
 init3d()

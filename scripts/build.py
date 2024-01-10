@@ -39,6 +39,7 @@ js_file_order = [
     "misc/downloadbook.js",
     "misc/musicplayer.js",
     "misc/sharelink.js",
+    "misc/loadingoverlay.js",
 
     "horror/horrormanager.js",
     "horror/heartbeat.js",
