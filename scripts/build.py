@@ -26,6 +26,7 @@ js_file_order = [
     "controls/touchdragcontrols.js",
     "controls/joystick.js",
 
+    "misc/allenglishwords.js",
     "misc/pathbuilder.js",
     "misc/crosshair.js",
     "misc/roomindicator.js",

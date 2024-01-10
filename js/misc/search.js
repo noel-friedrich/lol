@@ -241,10 +241,10 @@ function initSearch() {
     alphabetInput.value = BookGenerator.alphabet.replaceAll("\n", "\\n")
     const originalValue = BookGenerator.alphabet
     alphabetInput.oninput = () => {
-        const newAlphabet = alphabetInput.value.replaceAll("\\n", "\n")
+        let newAlphabet = alphabetInput.value.replaceAll("\\n", "\n")
         if (newAlphabet.length == 0) {
+            newAlphabet = originalValue
             alphabetInput.value = originalValue
-            return
         }
 
         BookGenerator.changeAlphabet(newAlphabet)

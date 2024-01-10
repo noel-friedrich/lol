@@ -16,11 +16,22 @@ class BookGenerator {
             throw new Error("Invalid alphabet")
         }
 
+        if (newAlphabet.toLowerCase().trim() == "10000 english words") {
+            newAlphabet = wordlist1000.map(w => w + " ")
+        }
+
         this.alphabet = newAlphabet
         this.invalidateCache()
 
-        if (document.getElementById("alphabet-input")) {
+        if (typeof newAlphabet == "string" && document.getElementById("alphabet-input")) {
             document.getElementById("alphabet-input").value = newAlphabet.replaceAll("\n", "\\n")
+        } else if (Array.isArray(newAlphabet)) {
+            if (newAlphabet.length <= 16) {
+                document.getElementById("alphabet-input").value = JSON.stringify(newAlphabet)
+            } else {
+                const s = JSON.stringify(newAlphabet)
+                document.getElementById("alphabet-input").value = s.slice(0, 25) + "....." + s.slice(-25, s.length)
+            }
         }
     }
 
