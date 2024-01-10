@@ -1211,11 +1211,6 @@ class BookViewer {
     }
 
     static openBook(bookId) {
-        if (HorrorManager.active && bookId == 11393922277440444n) {
-            HorrorManager.win()
-            return
-        }
-
         this.idElement.textContent = `Book#${bookId}\non Floor#${sceneManager.currFloorId}`
 
         const bookContent = BookGenerator.generateBook(bookId, sceneManager.currFloorId)
@@ -2106,7 +2101,7 @@ class HorrorManager {
 
     static async win() {
         const score = Math.floor(this.gameTime / 1000)
-        this.pause()
+        this.paused = true
         sceneManager.keyboardMouseControls._removePointerLock()
         HorrorManager.stop()
 
@@ -2117,12 +2112,49 @@ class HorrorManager {
         HorrorMenu.open("won")
     }
 
+    static async turnCameraToSlenderman({
+        animationDuration = 1000,
+        seeFaceDuration = 1000
+    }={}) {
+        const facePos = new THREE.Vector3().copy(Slenderman.position).setY(2.1)
+
+        const temp = new THREE.Euler().copy(sceneManager.camera.rotation)
+        sceneManager.camera.lookAt(facePos)
+        const goalQuaternion = new THREE.Quaternion().setFromEuler(sceneManager.camera.rotation)
+        sceneManager.camera.rotation.copy(temp)
+
+        const originalQuaternion = new THREE.Quaternion().setFromEuler(sceneManager.camera.rotation)
+        const currQuaternion = new THREE.Quaternion()
+
+        return new Promise(resolve => {
+            sceneManager.blockInputs = true
+            
+            animationManager.startAnimation(new CustomAnimation({
+                duration: animationDuration,
+                easing: Easing.easeInOut,
+                updateFunc: (t) => {
+                    currQuaternion.slerpQuaternions(originalQuaternion, goalQuaternion, t)
+                    sceneManager.camera.rotation.setFromQuaternion(currQuaternion)
+                },
+                endFunc: () => {
+                    setTimeout(() => {
+                        sceneManager.blockInputs = false
+                        resolve()
+                    }, seeFaceDuration)
+                }
+            }))
+        })
+    }
+
     static async lose() {
         this.score = 0
-        this.pause()
+        this.paused = true
+
+        MusicPlayer.playFrequencies([2000], {intervalMs: 1000})
+        await this.turnCameraToSlenderman()
+
         // TODO: lose animation
         sceneManager.keyboardMouseControls._removePointerLock()
-        MusicPlayer.playFrequencies([800], {intervalMs: 800})
 
         await new Promise(resolve => setTimeout(resolve, 100))
         HorrorManager.stop()
@@ -3015,6 +3047,11 @@ class WorldBuilder {
                             BigInt(rowId),
                             BigInt(columnId)
                         )
+                        
+                        if (HorrorManager.active && bookId == 0x287ab641f1fbbcn) {
+                            HorrorManager.win()
+                            return
+                        }
 
                         dummy.position.copy(posFromId(intersect.instanceId))
                         

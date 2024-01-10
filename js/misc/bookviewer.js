@@ -35,11 +35,6 @@ class BookViewer {
     }
 
     static openBook(bookId) {
-        if (HorrorManager.active && bookId == 11393922277440444n) {
-            HorrorManager.win()
-            return
-        }
-
         this.idElement.textContent = `Book#${bookId}\non Floor#${sceneManager.currFloorId}`
 
         const bookContent = BookGenerator.generateBook(bookId, sceneManager.currFloorId)

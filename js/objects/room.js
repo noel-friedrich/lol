@@ -310,6 +310,11 @@ class WorldBuilder {
                             BigInt(rowId),
                             BigInt(columnId)
                         )
+                        
+                        if (HorrorManager.active && bookId == 0x287ab641f1fbbcn) {
+                            HorrorManager.win()
+                            return
+                        }
 
                         dummy.position.copy(posFromId(intersect.instanceId))
                         
