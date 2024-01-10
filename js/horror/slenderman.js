@@ -250,7 +250,7 @@ class Slenderman {
         if (this.visible) {
             this.frozenUpdateCount++
 
-            if (this.frozenUpdateCount > 30 && Math.random() < 0.05) {
+            if (this.frozenUpdateCount > 60 && Math.random() < 0.008) {
                 this.teleport()
                 this.frozenUpdateCount = 0
             } else {
