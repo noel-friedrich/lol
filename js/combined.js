@@ -1796,10 +1796,10 @@ function initSearch() {
     alphabetInput.value = BookGenerator.alphabet.replaceAll("\n", "\\n")
     const originalValue = BookGenerator.alphabet
     alphabetInput.oninput = () => {
-        const newAlphabet = alphabetInput.value.replaceAll("\\n", "\n")
+        let newAlphabet = alphabetInput.value.replaceAll("\\n", "\n")
         if (newAlphabet.length == 0) {
+            newAlphabet = originalValue
             alphabetInput.value = originalValue
-            return
         }
 
         BookGenerator.changeAlphabet(newAlphabet)
@@ -2248,7 +2248,7 @@ class HorrorManager {
     }
 
     static async win() {
-        const score = Math.floor(this.gameTime / 1000)
+        const score = this.gameTime
         this.paused = true
         sceneManager.keyboardMouseControls._removePointerLock()
         HorrorManager.stop()
