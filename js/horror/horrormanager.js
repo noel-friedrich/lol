@@ -58,7 +58,7 @@ class HorrorManager {
     }
 
     static async win() {
-        const score = Math.floor(this.gameTime / 1000)
+        const score = this.gameTime
         this.paused = true
         sceneManager.keyboardMouseControls._removePointerLock()
         HorrorManager.stop()
